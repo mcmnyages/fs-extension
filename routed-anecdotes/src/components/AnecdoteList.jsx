@@ -1,4 +1,6 @@
-const AnecdoteList = ({ anecdotes }) => (
+const AnecdoteList = ({ anecdotes }) =>{ 
+  console.log('Anecdotes from list',anecdotes)
+  return (
   <div>
     <h2>Anecdotes</h2>
     <ul>
@@ -6,5 +8,6 @@ const AnecdoteList = ({ anecdotes }) => (
     </ul>
   </div>
 )
+}
 
 export default AnecdoteList
