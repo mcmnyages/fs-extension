@@ -1,13 +1,26 @@
-const AnecdoteList = ({ anecdotes }) =>{ 
-  console.log('Anecdotes from list',anecdotes)
+import { useAnecdotes } from '../hooks'
+
+const AnecdoteList = () => {
+    const { anecdotes, deleteAnecdote } = useAnecdotes()
+
   return (
-  <div>
-    <h2>Anecdotes</h2>
-    <ul>
-      {anecdotes.map(anecdote => <li key={anecdote.id}>{anecdote.content}</li>)}
-    </ul>
-  </div>
-)
+    <div>
+      <h2>Anecdotes</h2>
+      <ul>
+        {anecdotes.map(anecdote => 
+          <div key={anecdote.id}>
+            <li>
+              {anecdote.content}
+            </li>
+            <button onClick={() => deleteAnecdote(anecdote.id)}>
+              delete
+            </button>
+          </div>
+        )
+        }
+      </ul>
+    </div>
+  )
 }
 
 export default AnecdoteList

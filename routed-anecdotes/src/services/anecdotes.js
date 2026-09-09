@@ -23,5 +23,11 @@ const createNew = async (object) => {
   
   return await response.json()
 }
+const deleteAnecdote = id => {
+  return fetch(`${baseUrl}/${id}`, {
+    method: 'DELETE'
+  })
+}
 
-export default { getAll, createNew }
+
+export default { getAll, createNew,deleteAnecdote }
