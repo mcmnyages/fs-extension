@@ -16,6 +16,7 @@ import Blog from './components/Blog'
 import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
+import ErrorBoundary from './components/ErrorBoundary'
 import {
   AppBar,
   Toolbar,
@@ -199,23 +200,27 @@ const App = () => {
   return (
     <div>
       <h1>blog app</h1>
-
-      <Navigation
-        user={user}
-        logout={logout}
-      />
-
-      <Notification
-        notification={notification}
-      />
+      <ErrorBoundary>
+        <Navigation
+          user={user}
+          logout={logout}
+        />
+      </ErrorBoundary>
+      <ErrorBoundary>
+        <Notification
+          notification={notification}
+        />
+      </ErrorBoundary>
 
       <Routes>
         <Route
           path="/"
           element={
-            <BlogList
-              blogs={blogs}
-            />
+            <ErrorBoundary>
+              <BlogList
+                blogs={blogs}
+              />
+            </ErrorBoundary>
           }
         />
 
@@ -223,22 +228,30 @@ const App = () => {
           path="/login"
           element={
             user
-              ? <Navigate replace to="/" />
-              : <LoginForm
-                login={login}
-              />
+              ?
+              <ErrorBoundary>
+                <Navigate replace to="/" />
+              </ErrorBoundary>
+              :
+              <ErrorBoundary>
+                <LoginForm
+                  login={login}
+                />
+              </ErrorBoundary>
           }
         />
 
         <Route
           path="/blogs/:id"
           element={
-            <Blog
-              blogs={blogs}
-              user={user}
-              likeBlog={likeBlog}
-              deleteBlog={deleteBlog}
-            />
+            <ErrorBoundary>
+              <Blog
+                blogs={blogs}
+                user={user}
+                likeBlog={likeBlog}
+                deleteBlog={deleteBlog}
+              />
+            </ErrorBoundary>
           }
         />
 
@@ -246,13 +259,19 @@ const App = () => {
           path="/create"
           element={
             user
-              ? <BlogForm
-                addBlog={addBlog}
-              />
-              : <Navigate
-                replace
-                to="/login"
-              />
+              ?
+              <ErrorBoundary>
+                <BlogForm
+                  addBlog={addBlog}
+                />
+              </ErrorBoundary>
+              :
+              <ErrorBoundary>
+                <Navigate
+                  replace
+                  to="/login"
+                />
+              </ErrorBoundary>
           }
         />
       </Routes>
