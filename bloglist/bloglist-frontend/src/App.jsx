@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,8 +5,6 @@ import {
   Navigate,
 } from 'react-router-dom'
 
-import blogService from './services/blogs'
-import loginService from './services/login'
 import Navigation from './components/Navigation'
 
 import BlogList from './components/BlogList'
@@ -17,69 +14,17 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
-import { useNotification } from './notificationStore'
+import { useUser } from './userStore'
 
 
 const App = () => {
-  const [user, setUser] = useState(null)
-  const notify = useNotification()
-
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem(
-      'loggedBlogappUser'
-    )
-
-    if (loggedUserJSON) {
-      const loggedUser = JSON.parse(loggedUserJSON)
-      setUser(loggedUser)
-      blogService.setToken(loggedUser.token)
-    }
-  }, [])
-
-
-  const login = async (username, password) => {
-    try {
-      const loggedUser = await loginService.login({
-        username,
-        password,
-      })
-
-      window.localStorage.setItem(
-        'loggedBlogappUser',
-        JSON.stringify(loggedUser)
-      )
-
-      blogService.setToken(loggedUser.token)
-      setUser(loggedUser)
-
-      notify('login successful', 'succes')
-
-      return true
-    } catch (error) {
-      console.log(error)
-      notify(
-        'wrong username or password',
-        'error'
-      )
-
-      return false
-    }
-  }
-
-  const logout = () => {
-    window.localStorage.removeItem('loggedBlogappUser')
-    blogService.setToken(null)
-    setUser(null)
-  }
-
+  const user =useUser()
 
   return (
     <div>
       <h1>blog app</h1>
       <ErrorBoundary>
         <Navigation
-          user={user}
-          logout={logout}
         />
       </ErrorBoundary>
       <ErrorBoundary>
@@ -110,7 +55,6 @@ const App = () => {
               :
               <ErrorBoundary>
                 <LoginForm
-                  login={login}
                 />
               </ErrorBoundary>
           }

@@ -6,24 +6,34 @@ import {
   Box,
   Typography
 } from '@mui/material'
+import { useUserActions } from '../userStore'
+import { useNotification } from '../notificationStore'
 
 
-const LoginForm = ({ login }) => {
+const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const notify = useNotification()
+  const { login } = useUserActions()
 
   const navigate = useNavigate()
 
   const handleLogin = async event => {
     event.preventDefault()
+    try {
+      const success = await login({ username, password })
+      if (success) {
+        notify('login successful', 'succes')
+        navigate('/')
+      }
+    }catch (error) {
+      console.log(error)
+      notify(
+        'wrong username or password',
+        'error'
+      )
 
-    const success = await login(
-      username,
-      password
-    )
-
-    if (success) {
-      navigate('/')
+      return false
     }
   }
 

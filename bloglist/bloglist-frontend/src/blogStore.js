@@ -29,7 +29,6 @@ const useBlogstore = create((set) => ({
 
     remove: async (id) => {
       const deletedBlog = await blogService.deleteBlog(id)
-      console.log('response',deletedBlog)
       set((state) => ({
         blogs: state.blogs.filter((blog) => blog.id !== id),
       }))

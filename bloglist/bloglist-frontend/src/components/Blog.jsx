@@ -13,9 +13,11 @@ import {
 } from '@mui/material'
 import { useNotification } from '../notificationStore'
 import { useBlogs, useBlogsActions } from '../blogStore'
+import { useUser } from '../userStore'
 
 
-const Blog = ({ user }) => {
+const Blog = () => {
+  const user = useUser()
   const blogs = useBlogs()
   const { initialize,update,remove } = useBlogsActions()
   const notify =useNotification()
