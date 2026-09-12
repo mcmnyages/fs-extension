@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import {
   useParams,
   useNavigate,
@@ -10,10 +11,20 @@ import {
   Box,
   Divider,
 } from '@mui/material'
+import { useNotification } from '../notificationStore'
+import { useBlogs, useBlogsActions } from '../blogStore'
 
-const Blog = ({ blogs, user, likeBlog, deleteBlog }) => {
+
+const Blog = ({ user }) => {
+  const blogs = useBlogs()
+  const { initialize,update,remove } = useBlogsActions()
+  const notify =useNotification()
   const id = useParams().id
   const navigate = useNavigate()
+
+  useEffect(() => {
+    initialize()
+  }, [initialize])
 
   const blog = blogs.find(
     blog => blog.id === id
@@ -23,8 +34,13 @@ const Blog = ({ blogs, user, likeBlog, deleteBlog }) => {
     return null
   }
 
-  const handleLike = () => {
-    likeBlog(blog)
+  const handleLike = async () => {
+    const updateBlog={ ...blog, likes:blog.likes+1 }
+    const returnedBlog = await update(updateBlog)
+    notify(
+      `You liked ${returnedBlog.title} blog`,
+      'success'
+    )
   }
 
   const handleDelete = async () => {
@@ -36,7 +52,8 @@ const Blog = ({ blogs, user, likeBlog, deleteBlog }) => {
       return
     }
 
-    await deleteBlog(blog.id)
+    await remove(blog.id)
+    notify(`${blog.title} deleted succssfully`)
 
     navigate('/')
   }

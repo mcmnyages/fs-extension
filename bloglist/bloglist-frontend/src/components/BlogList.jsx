@@ -1,6 +1,13 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { useBlogs, useBlogsActions } from '../blogStore'
 
-const BlogList = ({ blogs }) => {
+const BlogList = () => {
+  const blogs = useBlogs()
+  const { initialize } = useBlogsActions()
+  useEffect(() => {
+    initialize()
+  }, [initialize])
   const sortedBlogs = [...blogs].sort(
     (a, b) => b.likes - a.likes
   )

@@ -6,15 +6,17 @@ import {
   Box,
   Typography
 } from '@mui/material'
+import { useNotification } from '../notificationStore'
+import { useBlogsActions } from '../blogStore'
 
-
-const BlogForm = ({ addBlog }) => {
+const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
+  const notify = useNotification()
+  const { create } = useBlogsActions()
 
   const navigate = useNavigate()
-
   const handleSubmit = async event => {
     event.preventDefault()
 
@@ -24,8 +26,19 @@ const BlogForm = ({ addBlog }) => {
       url,
     }
 
-    await addBlog(newBlog)
+    try {
+      const returnedBlog = await create(newBlog)
+      notify(
+        `a new blog "${returnedBlog.title}" was added`
+      )
+    } catch (error) {
+      notify(
+        'creating the blog failed',
+        'error'
+      )
 
+      throw error
+    }
     setTitle('')
     setAuthor('')
     setUrl('')
