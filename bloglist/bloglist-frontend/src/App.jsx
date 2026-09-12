@@ -17,6 +17,7 @@ import BlogForm from './components/BlogForm'
 import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
+import NotFound from './components/NotFound'
 import {
   AppBar,
   Toolbar,
@@ -274,6 +275,7 @@ const App = () => {
               </ErrorBoundary>
           }
         />
+        <Route path='*' element={<NotFound/>} />
       </Routes>
     </div>
   )
