@@ -1,11 +1,14 @@
-const Notification = ({ notification }) => {
-  if (!notification) {
+import useNotificationStore from '../notificationStore'
+
+const Notification = () => {
+  const { message, type } = useNotificationStore()
+  if (!message) {
     return null
   }
 
   const style = {
     color:
-      notification.type === 'error'
+      type === 'error'
         ? 'red'
         : 'green',
     background: '#eeeeee',
@@ -18,7 +21,7 @@ const Notification = ({ notification }) => {
 
   return (
     <div style={style}>
-      {notification.message}
+      {message}
     </div>
   )
 }
