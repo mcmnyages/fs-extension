@@ -7,13 +7,12 @@ import {
   Typography
 } from '@mui/material'
 import { useUserActions } from '../userStore'
-import { useNotification } from '../notificationStore'
-
+import useNotify from '../hooks/useNotify'
 
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const notify = useNotification()
+  const { notify } = useNotify()
   const { login } = useUserActions()
 
   const navigate = useNavigate()

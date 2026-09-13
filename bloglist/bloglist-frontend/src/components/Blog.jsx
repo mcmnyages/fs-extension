@@ -11,16 +11,16 @@ import {
   Box,
   Divider,
 } from '@mui/material'
-import { useNotification } from '../notificationStore'
 import { useBlogs, useBlogsActions } from '../blogStore'
 import { useUser } from '../userStore'
+import useNotify from '../hooks/useNotify'
 
 
 const Blog = () => {
   const user = useUser()
   const blogs = useBlogs()
   const { initialize,update,remove } = useBlogsActions()
-  const notify =useNotification()
+  const { notify } =useNotify()
   const id = useParams().id
   const navigate = useNavigate()
 

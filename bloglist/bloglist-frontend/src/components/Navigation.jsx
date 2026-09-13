@@ -8,12 +8,11 @@ import {
 } from '@mui/material'
 import { useUser } from '../userStore'
 import { useUserActions } from '../userStore'
-import { useNotification } from '../notificationStore'
-
+import useNotify from '../hooks/useNotify'
 
 const Navigation = () => {
   const { getUser,logout } =useUserActions()
-  const notify = useNotification()
+  const { notify } = useNotify()
   useEffect(() => {
     getUser()
   },[getUser])

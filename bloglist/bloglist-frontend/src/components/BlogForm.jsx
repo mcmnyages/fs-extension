@@ -6,14 +6,14 @@ import {
   Box,
   Typography
 } from '@mui/material'
-import { useNotification } from '../notificationStore'
 import { useBlogsActions } from '../blogStore'
+import useNotify from '../hooks/useNotify'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const notify = useNotification()
+  const { notify } = useNotify()
   const { create } = useBlogsActions()
 
   const navigate = useNavigate()

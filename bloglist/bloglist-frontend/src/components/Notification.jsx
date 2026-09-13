@@ -1,7 +1,8 @@
-import useNotificationStore from '../notificationStore'
+// import useNotificationStore from '../notificationStore' // I used zustund here
+import useNotify from '../hooks/useNotify'
 
 const Notification = () => {
-  const { message, type } = useNotificationStore()
+  const { message,type } = useNotify()
   if (!message) {
     return null
   }
