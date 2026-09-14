@@ -1,13 +1,26 @@
-import { useEffect } from 'react'
+// I was using store here but switched to tanstack query these are its imports
+// import { useBlogs, useBlogsActions } from '../blogStore'
+// import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { useBlogs, useBlogsActions } from '../blogStore'
+import useBlogs from '../hooks/useBlogs'
+
+
 
 const BlogList = () => {
-  const blogs = useBlogs()
-  const { initialize } = useBlogsActions()
-  useEffect(() => {
-    initialize()
-  }, [initialize])
+  const { blogs,isPending } = useBlogs()
+  console.log('Blogs',blogs)
+
+  if(isPending){
+    return(
+      <div>Loading  ...</div>
+    )
+  }
+  // It's usage here
+  // const { initialize } = useBlogsActions()
+  // useEffect(() => {
+  //   initialize()
+  // }, [initialize])
+
   const sortedBlogs = [...blogs].sort(
     (a, b) => b.likes - a.likes
   )

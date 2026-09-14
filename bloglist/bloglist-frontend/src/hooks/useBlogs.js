@@ -7,9 +7,11 @@ export const useBlogs =() => {
     queryFn:blogService.getAll,
     retry:2
   })
+  console.log('Results from hook', results)
   return {
     blogs:results.data,
     isPending:results.isPending,
+    isError:results.isError
   }
 
 }
