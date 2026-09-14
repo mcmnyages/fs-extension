@@ -2,14 +2,15 @@
 import useNotify from '../hooks/useNotify'
 
 const Notification = () => {
-  const { message,type } = useNotify()
+  const { message,messageType } = useNotify()
+  console.log('Message',message,'Type',messageType)
   if (!message) {
     return null
   }
 
   const style = {
     color:
-      type === 'error'
+      messageType === 'error'
         ? 'red'
         : 'green',
     background: '#eeeeee',
