@@ -3,7 +3,6 @@ import useNotify from '../hooks/useNotify'
 
 const Notification = () => {
   const { message,messageType } = useNotify()
-  console.log('Message',message,'Type',messageType)
   if (!message) {
     return null
   }
