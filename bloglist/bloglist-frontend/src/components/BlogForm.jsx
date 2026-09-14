@@ -6,15 +6,14 @@ import {
   Box,
   Typography
 } from '@mui/material'
-import { useBlogsActions } from '../blogStore'
-import useNotify from '../hooks/useNotify'
+// import { useBlogsActions } from '../blogStore'
+import useBlogs from '../hooks/useBlogs'
 
 const BlogForm = () => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [url, setUrl] = useState('')
-  const { notify } = useNotify()
-  const { create } = useBlogsActions()
+  const { create } = useBlogs()
 
   const navigate = useNavigate()
   const handleSubmit = async event => {
@@ -26,19 +25,7 @@ const BlogForm = () => {
       url,
     }
 
-    try {
-      const returnedBlog = await create(newBlog)
-      notify(
-        `a new blog "${returnedBlog.title}" was added`
-      )
-    } catch (error) {
-      notify(
-        'creating the blog failed',
-        'error'
-      )
-
-      throw error
-    }
+    await create(newBlog)
     setTitle('')
     setAuthor('')
     setUrl('')

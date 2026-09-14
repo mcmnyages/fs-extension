@@ -1,17 +1,79 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import blogService from '../services/blogs'
+import useNotify from './useNotify'
 
-export const useBlogs =() => {
+export const useBlogs = () => {
+  const queryClient = useQueryClient()
+  const blogs = queryClient.getQueryData(['blogs'])
+
+  const { notify } = useNotify()
   const results = useQuery({
-    queryKey:['blogs'],
-    queryFn:blogService.getAll,
-    retry:2
+    queryKey: ['blogs'],
+    queryFn: blogService.getAll,
+    retry: 2
   })
-  console.log('Results from hook', results)
+  const addBlog = useMutation({
+    mutationFn: blogService.create,
+    onSuccess: (newBlog) => {
+      queryClient.setQueryData(['blogs'], blogs.concat(newBlog))
+      notify(`a new blog "${newBlog.title}" was added`)
+    },
+    onError: (error) => {
+      notify('creating the blog failed', 'error')
+      throw error
+    }
+  })
+
+  const likeBlog = useMutation({
+    mutationFn: blogService.updateBlog,
+    onSuccess: (updatedBlog) => {
+      queryClient.setQueryData(['blogs'], (oldBlogs) => {
+        return oldBlogs.map((blog) => {
+          blog.id === updatedBlog.id ? updatedBlog : blog
+        })
+      })
+      notify(`You liked ${updatedBlog.title} blog`, 'success')
+      queryClient.invalidateQueries(['blogs'])
+    },
+    onError: (error) => {
+      notify('An error occured While liking the blog', 'error')
+      throw error
+    }
+  })
+
+  const removeMutation = useMutation({
+    mutationFn: blogService.deleteBlog,
+    onSuccess: (removedBlog) => {
+      queryClient.setQueryData(['blogs'], (oldBlogs) => {
+        return oldBlogs.filter(blog => blog.id !== removedBlog.id)
+      })
+    },
+    onError: (error) => {
+      notify('An error occured while deleting the blog', 'error')
+      throw error
+    }
+  })
+
+
   return {
-    blogs:results.data,
-    isPending:results.isPending,
-    isError:results.isError
+    blogs: results.data,
+    isPending: results.isPending,
+    isError: results.isError,
+    create: async (newBlog) => {
+      await addBlog.mutateAsync(newBlog)
+    },
+    likeBlog: async (blog) => {
+      await likeBlog.mutateAsync({
+        id: blog.id,
+        blog: {
+          ...blog,
+          likes: blog.likes + 1
+        }
+      })
+    },
+    remove: async (id) => {
+      await removeMutation.mutateAsync(id)
+    }
   }
 
 }

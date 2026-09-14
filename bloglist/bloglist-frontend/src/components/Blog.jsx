@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import {
   useParams,
   useNavigate,
@@ -11,22 +11,27 @@ import {
   Box,
   Divider,
 } from '@mui/material'
-import { useBlogs, useBlogsActions } from '../blogStore'
 import { useUser } from '../userStore'
 import useNotify from '../hooks/useNotify'
+import useBlogs from '../hooks/useBlogs'
 
 
 const Blog = () => {
   const user = useUser()
-  const blogs = useBlogs()
-  const { initialize,update,remove } = useBlogsActions()
+  const { blogs,isPending, likeBlog, remove } = useBlogs()
   const { notify } =useNotify()
   const id = useParams().id
   const navigate = useNavigate()
 
-  useEffect(() => {
-    initialize()
-  }, [initialize])
+  // useEffect(() => {
+  //   initialize()
+  // }, [initialize])
+
+  if(isPending){
+    return(
+      <div>Loading ... </div>
+    )
+  }
 
   const blog = blogs.find(
     blog => blog.id === id
@@ -37,12 +42,8 @@ const Blog = () => {
   }
 
   const handleLike = async () => {
-    const updateBlog={ ...blog, likes:blog.likes+1 }
-    const returnedBlog = await update(updateBlog)
-    notify(
-      `You liked ${returnedBlog.title} blog`,
-      'success'
-    )
+    await likeBlog(blog)
+
   }
 
   const handleDelete = async () => {
@@ -55,7 +56,7 @@ const Blog = () => {
     }
 
     await remove(blog.id)
-    notify(`${blog.title} deleted succssfully`)
+    notify(`${blog.title} deleted succssfully`, 'success')
 
     navigate('/')
   }

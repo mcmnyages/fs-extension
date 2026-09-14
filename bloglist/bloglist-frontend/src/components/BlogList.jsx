@@ -5,11 +5,8 @@ import { Link } from 'react-router-dom'
 import useBlogs from '../hooks/useBlogs'
 
 
-
 const BlogList = () => {
   const { blogs,isPending } = useBlogs()
-  console.log('Blogs',blogs)
-
   if(isPending){
     return(
       <div>Loading  ...</div>
