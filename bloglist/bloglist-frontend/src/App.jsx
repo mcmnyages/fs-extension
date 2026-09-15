@@ -14,9 +14,12 @@ import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
 import useUser from './hooks/useUser'
+import Users from './components/UsersComponent'
+import User from './components/UserComponent'
+
 
 const App = () => {
-  const { user } =useUser()
+  const { user } = useUser()
 
   return (
     <div>
@@ -43,6 +46,25 @@ const App = () => {
         />
 
         <Route
+          path="/users"
+          element={
+            <ErrorBoundary>
+              <Users />
+            </ErrorBoundary>
+          }
+        />
+
+        <Route
+          path="/users/:id"
+          element={
+            <ErrorBoundary>
+              <User />
+            </ErrorBoundary>
+          }
+        />
+
+
+        <Route
           path="/login"
           element={
             user
@@ -63,7 +85,6 @@ const App = () => {
           element={
             <ErrorBoundary>
               <Blog
-                user={user}
               />
             </ErrorBoundary>
           }

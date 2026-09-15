@@ -1,6 +1,7 @@
 import { useContext } from 'react'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import loginService from '../services/login'
+import userService from '../services/users'
 import UserContext from '../UserContext'
 import { saveUser, removeUser } from '../services/persistentUser'
 const useUser = () => {
@@ -14,11 +15,17 @@ const useUser = () => {
     }
   })
 
-  const logoutmUtation = useMutation({
+  const logoutMutation = useMutation({
     mutationFn: () => {
       removeUser()
       setUser(null)
     }
+  })
+
+  const results =useQuery({
+    queryKey:['users'],
+    queryFn:userService.getAllUsers,
+    retry:2
   })
 
   return {
@@ -27,8 +34,11 @@ const useUser = () => {
       return await loginMutation.mutateAsync(username, password)
     },
     logout: async () => {
-      await logoutmUtation.mutateAsync()
-    }
+      await logoutMutation.mutateAsync()
+    },
+    users:results.data,
+    usersPending:results.isPending,
+    userError:results.isError
   }
 }
 
