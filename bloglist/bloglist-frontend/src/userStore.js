@@ -8,9 +8,6 @@ const useUserStore = create((set) => ({
   actions: {
     login: async (data) => {
       const loggedUser = await loginService.login(data)
-
-      window.localStorage.setItem('loggedBlogappUser',JSON.stringify(loggedUser))
-
       set({
         user: loggedUser,
         token: loggedUser.token
@@ -20,7 +17,6 @@ const useUserStore = create((set) => ({
 
     getUser: () => {
       const loggedUserJSON = JSON.parse(
-        window.localStorage.getItem('loggedBlogappUser')
       )
 
       if (!loggedUserJSON) return null
@@ -33,7 +29,6 @@ const useUserStore = create((set) => ({
     },
 
     logout: () => {
-      window.localStorage.removeItem('loggedBlogappUser')
 
       set({
         user: null,
