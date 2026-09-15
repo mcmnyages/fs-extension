@@ -53,6 +53,13 @@ export const useBlogs = () => {
       throw error
     }
   })
+  const commentMutation = useMutation({
+    mutationFn: ({ id, comment }) => blogService.createComment(id, comment),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['blogs'] })
+      notify('You added a comment on this blog', 'success')
+    },
+  })
 
 
   return {
@@ -73,7 +80,11 @@ export const useBlogs = () => {
     },
     remove: async (id) => {
       await removeMutation.mutateAsync(id)
+    },
+    comment: async (id, comment) => {
+      await commentMutation.mutateAsync({ id, comment })
     }
+
   }
 
 }

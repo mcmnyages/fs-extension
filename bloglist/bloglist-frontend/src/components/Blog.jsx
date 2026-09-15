@@ -1,4 +1,4 @@
-// import { useEffect } from 'react'
+import { useState } from 'react'
 import {
   useParams,
   useNavigate,
@@ -10,33 +10,37 @@ import {
   Button,
   Box,
   Divider,
+  TextField,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
 } from '@mui/material'
 import useNotify from '../hooks/useNotify'
 import useBlogs from '../hooks/useBlogs'
 import useUser from '../hooks/useUser'
 
-
-
 const Blog = () => {
   const { user } = useUser()
-  const { blogs, isPending, likeBlog, remove } = useBlogs()
+  const {
+    blogs,
+    isPending,
+    likeBlog,
+    remove,
+    comment: addComment,
+  } = useBlogs()
+
   const { notify } = useNotify()
-  const id = useParams().id
+  const { id } = useParams()
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   initialize()
-  // }, [initialize])
+  const [comment, setComment] = useState('')
 
   if (isPending) {
-    return (
-      <div>Loading ... </div>
-    )
+    return <div>Loading ...</div>
   }
 
-  const blog = blogs.find(
-    blog => blog.id === id
-  )
+  const blog = blogs.find(blog => blog.id === id)
 
   if (!blog) {
     return null
@@ -44,7 +48,15 @@ const Blog = () => {
 
   const handleLike = async () => {
     await likeBlog(blog)
+  }
 
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    if (!comment.trim()) return
+
+    await addComment(blog.id, comment.trim())
+    setComment('')
   }
 
   const handleDelete = async () => {
@@ -52,12 +64,10 @@ const Blog = () => {
       `Delete blog "${blog.title}"?`
     )
 
-    if (!confirmed) {
-      return
-    }
+    if (!confirmed) return
 
     await remove(blog.id)
-    notify(`${blog.title} deleted succssfully`, 'success')
+    notify(`${blog.title} deleted successfully`, 'success')
 
     navigate('/')
   }
@@ -73,6 +83,7 @@ const Blog = () => {
         maxWidth: 700,
         mb: 3,
         mt: 3,
+        mx: 'auto',
       }}
     >
       <CardContent>
@@ -82,6 +93,7 @@ const Blog = () => {
         >
           {blog.title}
         </Typography>
+
         <Typography
           variant="subtitle1"
           color="text.secondary"
@@ -89,6 +101,7 @@ const Blog = () => {
         >
           by {blog.author}
         </Typography>
+
         <Typography
           component="a"
           href={blog.url}
@@ -101,30 +114,35 @@ const Blog = () => {
         >
           {blog.url}
         </Typography>
+
         <Typography
           variant="body2"
           color="text.secondary"
         >
           Added by {blog.user.name}
         </Typography>
-        <Divider sx={{ mb: 2 }} />
+
+        <Divider sx={{ my: 2 }} />
+
         <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
             gap: 2,
-            mb: 2,
+            mb: 3,
           }}
         >
           <Typography>
             Likes: {blog.likes}
           </Typography>
+
           <Button
             variant="contained"
             onClick={handleLike}
           >
             Like
           </Button>
+
           {isCreator && (
             <Button
               variant="outlined"
@@ -135,6 +153,70 @@ const Blog = () => {
             </Button>
           )}
         </Box>
+
+        <Divider sx={{ mb: 3 }} />
+
+        {/* Comments */}
+        <Typography
+          variant="h5"
+          gutterBottom
+        >
+          Comments
+        </Typography>
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            display: 'flex',
+            gap: 1,
+            mb: 3,
+          }}
+        >
+          <TextField
+            fullWidth
+            size="small"
+            label="add a comment"
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={!comment.trim()}
+          >
+            Add
+          </Button>
+        </Box>
+
+        {blog.comments?.length > 0 ? (
+          <List>
+            {blog.comments.map((c, index) => (
+              <Paper
+                key={index}
+                elevation={1}
+                sx={{
+                  mb: 1,
+                  px: 2,
+                }}
+              >
+                <ListItem>
+                  <ListItemText
+                    primary={c}
+                  />
+                </ListItem>
+              </Paper>
+            ))}
+          </List>
+        ) : (
+          <Typography
+            color="text.secondary"
+            sx={{ fontStyle: 'italic' }}
+          >
+            No comments yet. Be the first to comment!
+          </Typography>
+        )}
       </CardContent>
     </Card>
   )
