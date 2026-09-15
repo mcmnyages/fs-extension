@@ -1,9 +1,9 @@
 import axios from 'axios'
 const baseUrl = '/api/blogs'
-let token = null
-const setToken = newToken => {
-  token = `Bearer ${newToken}`
-}
+import { getUser } from './persistentUser'
+const user = getUser()
+
+let token = `Bearer ${user.token}`
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -38,7 +38,6 @@ const deleteBlog = async (id) => {
 export default {
   getAll,
   create,
-  setToken,
   updateBlog,
   deleteBlog
 }
