@@ -34,7 +34,7 @@ test.describe('Users view', () => {
   })
 
   test('lists every user together with the number of blogs they have added', async ({ page }) => {
-    await page.getByRole('link', { name: 'users', exact: true }).click()
+    await page.getByRole('link', { name: 'Users', exact: true }).click()
 
     const bettyRow = page.getByRole('row', { name: /blogging betty/i })
     await expect(bettyRow).toContainText('2')
@@ -44,7 +44,7 @@ test.describe('Users view', () => {
   })
 
   test('clicking a user name opens that user\'s own page listing their blogs', async ({ page }) => {
-    await page.getByRole('link', { name: 'users', exact: true }).click()
+    await page.getByRole('link', { name: 'Users', exact: true }).click()
 
     await page.getByRole('link', { name: 'Blogging Betty', exact: true }).click()
 
@@ -54,7 +54,7 @@ test.describe('Users view', () => {
   })
 
   test('a user with no blogs has an empty own page', async ({ page }) => {
-    await page.getByRole('link', { name: 'users', exact: true }).click()
+    await page.getByRole('link', { name: 'Users', exact: true }).click()
 
     await page.getByRole('link', { name: 'Lurking Larry', exact: true }).click()
 

@@ -15,13 +15,13 @@ export default defineConfig({
   webServer: [
     {
       command: 'npm run start:test',
-      cwd: '../bloglist/server',
-      url: 'http://localhost:3001/api/blogs',
+      cwd: '../bloglist/bloglist_backend',
+      url: 'http://localhost:3003/api/blogs',
       reuseExistingServer: !process.env.CI,
     },
     {
       command: 'npm run dev',
-      cwd: '../bloglist/client',
+      cwd: '../bloglist/bloglist-frontend',
       url: 'http://localhost:5173',
       reuseExistingServer: !process.env.CI,
     },

@@ -1,4 +1,4 @@
-const SERVER_URL = 'http://localhost:3001'
+const SERVER_URL = 'http://localhost:3003'
 
 export const resetDatabase = async request => {
   await request.post(`${SERVER_URL}/api/testing/reset`)
@@ -23,12 +23,12 @@ export const createBlogViaApi = async (request, token, blog) => {
 }
 
 export const login = async (page, { username, password }) => {
-  await page.getByRole('link', { name: 'login', exact: true }).click()
+  await page.getByRole('link', { name: 'Login', exact: true }).click()
   const inputs = page.locator('form input')
   await inputs.nth(0).fill(username)
   await inputs.nth(1).fill(password)
-  await page.getByRole('button', { name: 'login' }).click()
-  await page.getByRole('button', { name: 'logout' }).waitFor()
+  await page.getByRole('button', { name: 'Login' }).click()
+  await page.getByRole('button', { name: 'Logout' }).waitFor()
 }
 
 export const createBlog = async (page, { title, author, url }) => {

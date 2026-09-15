@@ -46,7 +46,7 @@ test.describe("Error boundary", () => {
     // ErrorBoundary (App.jsx) is not keyed to the route, so once it catches
     // an error it keeps rendering its fallback even after the URL changes.
     // The nav bar itself, rendered outside the boundary, is what stays usable.
-    const blogsLink = page.getByRole("link", { name: "blogs", exact: true })
+    const blogsLink = page.getByRole("link", { name: "Blogs", exact: true })
     await expect(blogsLink).toBeVisible()
 
     await blogsLink.click()

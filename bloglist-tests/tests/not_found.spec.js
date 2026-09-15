@@ -15,13 +15,13 @@ test.describe('Nonexisting routes', () => {
   test('the navigation bar is still visible on the page not found view', async ({ page }) => {
     await page.goto('/some-nonexisting-path')
 
-    await expect(page.getByRole('link', { name: 'blogs', exact: true })).toBeVisible()
+    await expect(page.getByRole('link', { name: 'Blogs', exact: true })).toBeVisible()
   })
 
   test('the user can navigate back to the blog list from the page not found view', async ({ page }) => {
     await page.goto('/some-nonexisting-path')
 
-    await page.getByRole('link', { name: 'blogs', exact: true }).click()
+    await page.getByRole('link', { name: 'Blogs', exact: true }).click()
 
     await expect(page).toHaveURL('/')
     await expect(page.getByRole('heading', { name: 'blogs' })).toBeVisible()
