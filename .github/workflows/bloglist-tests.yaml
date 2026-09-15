@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -15,8 +16,16 @@ jobs:
         with:
           node-version: 24
 
-      - name: Install app dependencies
+      - name: Install root dependencies
         working-directory: bloglist
+        run: npm ci
+
+      - name: Install backend dependencies
+        working-directory: bloglist/bloglist_backend
+        run: npm ci
+
+      - name: Install frontend dependencies
+        working-directory: bloglist/bloglist-frontend
         run: npm ci
 
       - name: Install test dependencies
