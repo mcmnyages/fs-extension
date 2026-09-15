@@ -20,7 +20,7 @@ jobs:
         run: npm ci
 
       - name: Install test dependencies
-        working-directory: routed-anecdotes-tests
+        working-directory: bloglist-tests
         run: npm ci
 
       - name: Install Playwright browsers
