@@ -1,4 +1,3 @@
-import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import {
   AppBar,
@@ -6,18 +5,22 @@ import {
   Button,
   Typography
 } from '@mui/material'
-import { useUser } from '../userStore'
+// import { useUser } from '../userStore'
 import { useUserActions } from '../userStore'
 import useNotify from '../hooks/useNotify'
+import useUser from '../hooks/useUser'
 
 const Navigation = () => {
-  const { getUser,logout } =useUserActions()
+  const { logout } =useUserActions()
   const { notify } = useNotify()
-  useEffect(() => {
-    getUser()
-  },[getUser])
+  const { user }=useUser()
 
-  const user = useUser()
+
+  // useEffect(() => {
+  //   getUser()
+  // },[getUser])
+
+
   const navigate = useNavigate()
 
   const handleLogout = () => {

@@ -6,14 +6,21 @@ import {
   Box,
   Typography
 } from '@mui/material'
-import { useUserActions } from '../userStore'
+// import { useUserActions } from '../userStore'
 import useNotify from '../hooks/useNotify'
+import useUser from '../hooks/useUser'
+
+
 
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const { login,user } = useUser()
   const { notify } = useNotify()
-  const { login } = useUserActions()
+  // const { login } = useUserActions()
+
+  console.log('user from context:', user)
+
 
   const navigate = useNavigate()
 
@@ -21,6 +28,7 @@ const LoginForm = () => {
     event.preventDefault()
     try {
       const success = await login({ username, password })
+      console.log('success',success)
       if (success) {
         notify('login successful', 'succes')
         navigate('/')

@@ -13,11 +13,10 @@ import LoginForm from './components/LoginForm'
 import Notification from './components/Notification'
 import ErrorBoundary from './components/ErrorBoundary'
 import NotFound from './components/NotFound'
-import { useUser } from './userStore'
-
+import useUser from './hooks/useUser'
 
 const App = () => {
-  const user =useUser()
+  const { user } =useUser()
 
   return (
     <div>
