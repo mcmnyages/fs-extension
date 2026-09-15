@@ -79,4 +79,25 @@ blogRouter.delete('/:id', userExtractor, async (request, response) => {
   response.status(204).end()
 })
 
+
+blogRouter.post('/:id/comments', async (request, response) => {
+  const { comment } = request.body
+
+  if (!comment) {
+    return response.status(400).json({ error: 'comment content missing' })
+  }
+
+  const blog = await Blog.findById(request.params.id)
+
+  if (!blog) {
+    return response.status(404).json({ error: 'blog not found' })
+  }
+
+  blog.comments = blog.comments.concat(comment)
+  const savedBlog = await blog.save()
+
+  // Return the newly added comment or the updated blog
+  response.status(201).json(savedBlog)
+})
+
 module.exports = blogRouter
