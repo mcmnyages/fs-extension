@@ -6,21 +6,14 @@ import {
   Box,
   Typography
 } from '@mui/material'
-// import { useUserActions } from '../userStore'
 import useNotify from '../hooks/useNotify'
 import useUser from '../hooks/useUser'
-
-
 
 const LoginForm = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const { login,user } = useUser()
+  const { login } = useUser()
   const { notify } = useNotify()
-  // const { login } = useUserActions()
-
-  console.log('user from context:', user)
-
 
   const navigate = useNavigate()
 

@@ -6,20 +6,12 @@ import {
   Typography
 } from '@mui/material'
 // import { useUser } from '../userStore'
-import { useUserActions } from '../userStore'
 import useNotify from '../hooks/useNotify'
 import useUser from '../hooks/useUser'
 
 const Navigation = () => {
-  const { logout } =useUserActions()
   const { notify } = useNotify()
-  const { user }=useUser()
-
-
-  // useEffect(() => {
-  //   getUser()
-  // },[getUser])
-
+  const { user,logout }=useUser()
 
   const navigate = useNavigate()
 

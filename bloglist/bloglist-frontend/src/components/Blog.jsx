@@ -18,9 +18,9 @@ import useUser from '../hooks/useUser'
 
 
 const Blog = () => {
-  const user = useUser()
-  const { blogs,isPending, likeBlog, remove } = useBlogs()
-  const { notify } =useNotify()
+  const { user } = useUser()
+  const { blogs, isPending, likeBlog, remove } = useBlogs()
+  const { notify } = useNotify()
   const id = useParams().id
   const navigate = useNavigate()
 
@@ -28,8 +28,8 @@ const Blog = () => {
   //   initialize()
   // }, [initialize])
 
-  if(isPending){
-    return(
+  if (isPending) {
+    return (
       <div>Loading ... </div>
     )
   }

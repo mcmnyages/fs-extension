@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   TextField,
@@ -8,11 +7,12 @@ import {
 } from '@mui/material'
 // import { useBlogsActions } from '../blogStore'
 import useBlogs from '../hooks/useBlogs'
+import useField from '../hooks/useField'
 
 const BlogForm = () => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
   const { create } = useBlogs()
 
   const navigate = useNavigate()
@@ -20,15 +20,12 @@ const BlogForm = () => {
     event.preventDefault()
 
     const newBlog = {
-      title,
-      author,
-      url,
+      title:title.value,
+      author:author.value,
+      url:url.value,
     }
 
     await create(newBlog)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
 
     navigate('/')
   }
@@ -51,20 +48,17 @@ const BlogForm = () => {
 
         <TextField
           label="Title"
-          value={title}
-          onChange={({ target }) => setTitle(target.value)}
+          {...title}
         />
 
         <TextField
           label="Author"
-          value={author}
-          onChange={({ target }) => setAuthor(target.value)}
+          {...author}
         />
 
         <TextField
           label="URL"
-          value={url}
-          onChange={({ target }) => setUrl(target.value)}
+          {...url}
         />
 
         <Button
