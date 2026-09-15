@@ -186,7 +186,7 @@ const Blog = () => {
             variant="contained"
             disabled={!comment.trim()}
           >
-            Add
+            Add comment
           </Button>
         </Box>
 
