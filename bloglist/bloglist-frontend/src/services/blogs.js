@@ -3,7 +3,10 @@ const baseUrl = '/api/blogs'
 import { getUser } from './persistentUser'
 const user = getUser()
 
-let token = `Bearer ${user.token}`
+let token = null
+if (user) {
+  token = `Bearer ${user.token}`
+}
 
 const getAll = () => {
   const request = axios.get(baseUrl)
@@ -31,7 +34,7 @@ const deleteBlog = async (id) => {
       Authorization: token
     }
   }
-  const response = await axios.delete(`${baseUrl}/${id}`,config)
+  const response = await axios.delete(`${baseUrl}/${id}`, config)
   return response.data
 }
 
